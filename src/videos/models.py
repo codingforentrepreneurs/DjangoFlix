@@ -10,3 +10,9 @@ class Video(models.Model):
     # updated 
     # state 
     # publish_timestamp
+
+class VideoProxy(Video):
+    class Meta:
+        proxy = True
+        verbose_name = 'Published Video'
+        verbose_name_plural = 'Published Videos'
