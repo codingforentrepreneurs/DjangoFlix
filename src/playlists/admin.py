@@ -1,6 +1,15 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Playlist
+from .models import Playlist, PlaylistItem
 
-admin.site.register(Playlist)
+class PlaylistItemInline(admin.TabularInline):
+    model = PlaylistItem
+    extra = 0
+
+class PlaylistAdmin(admin.ModelAdmin):
+    inlines = [PlaylistItemInline]
+    class Meta:
+        model = Playlist
+
+admin.site.register(Playlist, PlaylistAdmin)
