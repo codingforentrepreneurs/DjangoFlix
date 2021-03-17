@@ -48,5 +48,8 @@ class PlaylistAdmin(admin.ModelAdmin):
     inlines = [PlaylistItemInline]
     class Meta:
         model = Playlist
+    
+    def get_queryset(self, request):
+        return Playlist.objects.filter(type=Playlist.PlaylistTypeChoices.PLAYLIST)
 
 admin.site.register(Playlist, PlaylistAdmin)
