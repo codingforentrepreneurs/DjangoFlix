@@ -59,6 +59,28 @@ class Playlist(models.Model):
 pre_save.connect(publish_state_pre_save, sender=Playlist)
 pre_save.connect(slugify_pre_save, sender=Playlist)
 
+
+
+class MovieProxyManager(PlaylistManager):
+    def all(self):
+        return self.get_queryset().filter(type=Playlist.PlaylistTypeChoices.MOVIE)
+
+
+class MovieProxy(Playlist):
+
+    objects = MovieProxyManager()
+
+    class Meta:
+        verbose_name = 'Movie'
+        verbose_name_plural = 'Movies'
+        proxy = True
+
+    def save(self, *args, **kwargs):
+        self.type = Playlist.PlaylistTypeChoices.MOVIE
+        super().save(*args, **kwargs)
+
+
+
 class TVShowProxyManager(PlaylistManager):
     def all(self):
         return self.get_queryset().filter(parent__isnull=True, type=Playlist.PlaylistTypeChoices.SHOW)
@@ -67,12 +89,14 @@ class TVShowProxy(Playlist):
 
     objects = TVShowProxyManager()
 
-
-
     class Meta:
         verbose_name = 'TV Show'
         verbose_name_plural = 'TV Shows'
         proxy = True
+
+    def save(self, *args, **kwargs):
+        self.type = Playlist.PlaylistTypeChoices.SHOW
+        super().save(*args, **kwargs)
 
 
 
@@ -88,6 +112,10 @@ class TVShowSeasonProxy(Playlist):
         verbose_name = 'Season'
         verbose_name_plural = 'Seasons'
         proxy = True
+
+    def save(self, *args, **kwargs):
+        self.type = Playlist.PlaylistTypeChoices.SEASON
+        super().save(*args, **kwargs)
 
 
 class PlaylistItem(models.Model):
