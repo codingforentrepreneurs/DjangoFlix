@@ -6,6 +6,7 @@ from django.utils.text import slugify
 from djangoflix.db.models import PublishStateOptions
 from djangoflix.db.receivers import publish_state_pre_save, slugify_pre_save
 
+from categories.models import Category
 from videos.models import Video
 
 
@@ -30,8 +31,8 @@ class Playlist(models.Model):
         SHOW = 'TVS', "TV Show"
         SEASON = 'SEA', "Season"
         PLAYLIST = 'PLY', "Playlist"
-
     parent = models.ForeignKey("self", blank=True, null=True, on_delete=models.SET_NULL)
+    category = models.ForeignKey(Category, related_name='playlists', blank=True, null=True, on_delete=models.SET_NULL)
     order = models.IntegerField(default=1)
     title = models.CharField(max_length=220)
     type = models.CharField(max_length=3, choices=PlaylistTypeChoices.choices, default=PlaylistTypeChoices.PLAYLIST)
