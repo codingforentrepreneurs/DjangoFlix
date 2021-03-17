@@ -25,6 +25,8 @@ class PlaylistManager(models.Manager):
         return self.get_queryset().published()
 
 class Playlist(models.Model):
+    parent = models.ForeignKey("self", null=True, on_delete=models.SET_NULL)
+    order = models.IntegerField(default=1)
     title = models.CharField(max_length=220)
     description = models.TextField(blank=True, null=True)
     slug = models.SlugField(blank=True, null=True)
