@@ -1,11 +1,27 @@
 {% extends 'base.html' %}
 
+{% block head_title %}
+    {% if title %}
+    {{ title }} /
+    {% endif %}
+    {{ block.super }}
+{% endblock %}
+
+
+
 
 {% block content %}
-{{ title }}
+
+{% if title %}
+    <h1>{{ title }}</h1>
+{% endif %}
 
 
-{{ object_list }}
+<ul>
+    {% for instance in object_list %}
+        <li>{{ instance.title }}  {{ instance.get_short_display }}</li>
+    {% endfor %}
+</ul>
 
 
 {% endblock %}

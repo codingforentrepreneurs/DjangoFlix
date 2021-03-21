@@ -12,6 +12,9 @@ class PlaylistMixin():
             context['title'] = self.title
         return context
 
+    def get_queryset(self):
+        return super().get_queryset().published()
+
 
 class MovieListView(PlaylistMixin, ListView):
     queryset = MovieProxy.objects.all()
