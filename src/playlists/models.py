@@ -29,6 +29,9 @@ class PlaylistManager(models.Manager):
     def published(self):
         return self.get_queryset().published()
 
+    def featured_playlists(self):
+        return self.get_queryset().filter(type=Playlist.PlaylistTypeChoices.PLAYLIST)
+
 class Playlist(models.Model):
     class PlaylistTypeChoices(models.TextChoices):
         MOVIE = "MOV", "Movie"
