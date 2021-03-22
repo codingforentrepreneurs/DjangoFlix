@@ -3,6 +3,7 @@ from django.utils.text import slugify
 # Create your models here.
 
 from .models import PublishStateOptions
+from .utils import get_unique_slug
 
 def publish_state_pre_save(sender, instance, *args, **kwargs):
     is_publish = instance.state == PublishStateOptions.PUBLISH 
@@ -17,3 +18,9 @@ def slugify_pre_save(sender, instance, *args, **kwargs):
     slug = instance.slug
     if slug is None:
         instance.slug = slugify(title)
+
+def unique_slugify_pre_save(sender, instance, *args, **kwargs):
+    title = instance.title
+    slug = instance.slug
+    if slug is None:
+        instance.slug = get_unique_slug(instance, size=5)

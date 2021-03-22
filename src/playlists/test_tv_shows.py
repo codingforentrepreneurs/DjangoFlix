@@ -11,10 +11,11 @@ from .models import TVShowProxy, TVShowSeasonProxy
 class TVShowProxyModelTestCase(TestCase):
     def create_show_with_seasons(self):
         the_office = TVShowProxy.objects.create(title='The Office Series')
-        season_1 = TVShowSeasonProxy.objects.create(title='The Office Series Season 1', state=PublishStateOptions.PUBLISH, parent=the_office, order=1)
+        self.season_1 = TVShowSeasonProxy.objects.create(title='The Office Series Season 1', state=PublishStateOptions.PUBLISH, parent=the_office, order=1)
         season_2 = TVShowSeasonProxy.objects.create(title='The Office Series Season 2', parent=the_office, order=2)
         season_3 = TVShowSeasonProxy.objects.create(title='The Office Series Season 3', parent=the_office, order=3)
         season_4 = TVShowSeasonProxy.objects.create(title='The Office Series Season 4', parent=the_office, order=4)
+        self.season_11 = TVShowSeasonProxy.objects.create(title='The Office Series Season 1', parent=the_office, order=4)
         self.show = the_office
 
     def create_videos(self):
@@ -40,7 +41,10 @@ class TVShowProxyModelTestCase(TestCase):
     def test_show_has_seasons(self):
         seasons = self.show.playlist_set.all()
         self.assertTrue(seasons.exists())
-        self.assertEqual(seasons.count(), 4)
+        self.assertEqual(seasons.count(), 5)
+
+    def test_season_slug_unique(self):
+        self.assertNotEqual(self.season_1.slug, self.season_11.slug)
 
     def test_playlist_video(self):
         self.assertEqual(self.obj_a.video, self.video_a)
@@ -81,7 +85,7 @@ class TVShowProxyModelTestCase(TestCase):
 
     def test_seasons_created_count(self):
         qs = TVShowSeasonProxy.objects.all()
-        self.assertEqual(qs.count(), 4)
+        self.assertEqual(qs.count(), 5)
     
     def test_tv_show_draft_case(self):
         qs = TVShowProxy.objects.all().filter(state=PublishStateOptions.DRAFT)
@@ -89,7 +93,7 @@ class TVShowProxyModelTestCase(TestCase):
 
     def test_seasons_draft_case(self):
         qs = TVShowSeasonProxy.objects.all().filter(state=PublishStateOptions.DRAFT)
-        self.assertEqual(qs.count(), 3)
+        self.assertEqual(qs.count(), 4)
 
     def test_publish_case(self):
         qs = TVShowProxy.objects.all().filter(state=PublishStateOptions.PUBLISH)
