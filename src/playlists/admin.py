@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from tags.admin import TaggedItemInline
 
-from .models import MovieProxy, TVShowProxy, TVShowSeasonProxy, Playlist, PlaylistItem
+from .models import MovieProxy, TVShowProxy, TVShowSeasonProxy, Playlist, PlaylistItem, PlaylistRelated
 
 
 class MovieProxyAdmin(admin.ModelAdmin):
@@ -51,15 +51,27 @@ class TVShowProxyAdmin(admin.ModelAdmin):
 admin.site.register(TVShowProxy, TVShowProxyAdmin)
 
 
+class PlaylistRelatedInline(admin.TabularInline):
+    model = PlaylistRelated
+    fk_name = 'playlist'
+    extra = 0
 
 class PlaylistItemInline(admin.TabularInline):
     model = PlaylistItem
     extra = 0
 
 class PlaylistAdmin(admin.ModelAdmin):
-    inlines = [PlaylistItemInline]
+    inlines = [PlaylistRelatedInline, PlaylistItemInline]
+    fields = [
+        'title',
+        'description',
+        'slug',
+        'state',
+        'active'
+    ]
     class Meta:
         model = Playlist
+
     
     def get_queryset(self, request):
         return Playlist.objects.filter(type=Playlist.PlaylistTypeChoices.PLAYLIST)
