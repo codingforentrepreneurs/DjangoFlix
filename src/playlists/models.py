@@ -68,6 +68,20 @@ class Playlist(models.Model):
     def get_short_display(self):
         return ""
 
+    def get_video_id(self):
+        """
+        get main video id to render video for users
+        """
+        if self.video is None:
+            return None
+        return self.video.get_video_id()
+
+    def get_clips(self):
+        """
+        get clips to render clips for users
+        """
+        return self.playlistitem_set.all().published()
+
     @property
     def is_published(self):
         return self.active
@@ -86,6 +100,12 @@ class MovieProxy(Playlist):
 
     objects = MovieProxyManager()
 
+    def get_movie_id(self):
+        """
+        get movie id to render movie for users
+        """
+        return self.get_video_id()
+    
     class Meta:
         verbose_name = 'Movie'
         verbose_name_plural = 'Movies'
@@ -121,6 +141,8 @@ class TVShowProxy(Playlist):
     def get_short_display(self):
         return f"{self.seasons.count()} Seasons"
 
+    
+
 
 
 class TVShowSeasonProxyManager(PlaylistManager):
@@ -139,6 +161,38 @@ class TVShowSeasonProxy(Playlist):
     def save(self, *args, **kwargs):
         self.type = Playlist.PlaylistTypeChoices.SEASON
         super().save(*args, **kwargs)
+
+    def get_season_trailer(self):
+        """
+        get episodes to render for users
+        """
+        return self.get_video_id()
+
+    def get_episodes(self):
+        """
+        get episodes to render for users
+        """
+        return self.playlistitem_set.all().published()
+    
+
+
+
+class PlaylistItemQuerySet(models.QuerySet):
+    def published(self):
+        now = timezone.now()
+        return self.filter(
+            playlist__state=PublishStateOptions.PUBLISH,
+            playlist__publish_timestamp__lte= now,
+            video__state=PublishStateOptions.PUBLISH,
+            video__publish_timestamp__lte= now 
+        )
+
+class PlaylistItemManager(models.Manager):
+    def get_queryset(self):
+        return PlaylistItemQuerySet(self.model, using=self._db)
+
+    def published(self):
+        return self.get_queryset().published()
 
 
 class PlaylistItem(models.Model):

@@ -27,8 +27,9 @@
     - Elasticsearch
     - Video Analytics & Watch History
     - Video hosts API
-        - Vimeo, YouTube,
+        - Vimeo, YouTube, Wistia, 
         - Open Source Option (ffmpeg)
+        - Nginx, stream via ffmpeg
     - API-Driven Video Details
         - Cast Members (actors, directors)
         - Release Year
