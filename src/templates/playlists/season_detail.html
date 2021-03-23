@@ -14,4 +14,14 @@
 
 {{ object.slug }} {{ object.get_short_display }}
 
+
+
+<h3>Trailer</h3>
+{% include 'videos/embed.html' with video_id=object.get_video_id %}
+
+<h3>Episodes</h3>
+{% for playlist_item in object.get_episodes %}
+<h5>Episode {{ playlist_item.order }}</h5>
+    {% include 'videos/embed.html' with video_id=playlist_item.video.get_video_id %}
+{% endfor %}
 {% endblock %}

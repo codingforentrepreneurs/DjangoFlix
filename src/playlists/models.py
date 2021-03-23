@@ -172,7 +172,9 @@ class TVShowSeasonProxy(Playlist):
         """
         get episodes to render for users
         """
-        return self.playlistitem_set.all().published()
+        qs = self.playlistitem_set.all().published()
+        print(qs)
+        return qs
     
 
 
@@ -200,6 +202,8 @@ class PlaylistItem(models.Model):
     video = models.ForeignKey(Video, on_delete=models.CASCADE)
     order = models.IntegerField(default=1)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    objects = PlaylistItemManager()
 
     class Meta:
         ordering = ['order', '-timestamp']
