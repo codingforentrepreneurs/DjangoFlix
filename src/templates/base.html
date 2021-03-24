@@ -8,6 +8,12 @@
 
     </head>
     <body>
+        <form method='GET' action='/search/'>
+            <input type='text' name='q' placeholder='Search for a movie or tv show'>
+            <button type='submit'>Search</button>
+        </form>
+
+
         {% block content %}
         {% endblock content %}
     </body>

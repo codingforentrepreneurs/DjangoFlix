@@ -21,11 +21,21 @@ class PlaylistQuerySet(models.QuerySet):
             state=PublishStateOptions.PUBLISH,
             publish_timestamp__lte= now 
         )
+    def search(self, query=None):
+        if query is None:
+            return self.none()
+        return self.filter(
+            Q(title__icontains=query) |
+            Q(description__icontains=query) | 
+            Q(category__title__icontains=query) |
+            Q(category__slug__icontains=query) |
+            Q(tags__tag__icontains=query)
+        ).distinct()
+
     def movie_or_show(self):
         return self.filter(
             Q(type=Playlist.PlaylistTypeChoices.MOVIE) |
             Q(type=Playlist.PlaylistTypeChoices.SHOW)
-
         )
 
 class PlaylistManager(models.Manager):
