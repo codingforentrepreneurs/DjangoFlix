@@ -48,4 +48,5 @@ urlpatterns = [
     path('shows/<slug:slug>/seasons/', TVShowDetailView.as_view()),
     path('shows/<slug:slug>/', TVShowDetailView.as_view()),
     path('shows/', TVShowListView.as_view()),
+    path('tags/', include('tags.urls')),
 ]

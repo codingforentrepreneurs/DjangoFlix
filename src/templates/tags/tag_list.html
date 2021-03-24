@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block head_title %}
+    Tags / 
+    {{ block.super }}
+{% endblock %}
+
+
+
+
+{% block content %}
+
+<h1>Tags</h1>
+
+
+{% for tag in tag_list %}
+<div>
+    <h3><a href="/tags/{{tag}}"> {{ tag|title }}</a></h3>
+</div>
+{% endfor %}
+
+{% endblock %}

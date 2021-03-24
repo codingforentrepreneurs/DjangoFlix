@@ -6,6 +6,7 @@ from .models import MovieProxy, TVShowProxy, TVShowSeasonProxy, Playlist, Playli
 
 
 class MovieProxyAdmin(admin.ModelAdmin):
+    inlines = [TaggedItemInline]
     list_display = ['title']
     fields = ['title', 'description', 'state', 'category', 'video', 'slug']
     class Meta:
@@ -22,7 +23,7 @@ class SeasonEpisodeInline(admin.TabularInline):
     extra = 0
 
 class TVShowSeasonProxyAdmin(admin.ModelAdmin):
-    inlines = [SeasonEpisodeInline]
+    inlines = [TaggedItemInline, SeasonEpisodeInline]
     list_display = ['title', 'parent']
     class Meta:
         model = TVShowSeasonProxy
@@ -61,7 +62,7 @@ class PlaylistItemInline(admin.TabularInline):
     extra = 0
 
 class PlaylistAdmin(admin.ModelAdmin):
-    inlines = [PlaylistRelatedInline, PlaylistItemInline]
+    inlines = [PlaylistRelatedInline, PlaylistItemInline, TaggedItemInline]
     fields = [
         'title',
         'description',
