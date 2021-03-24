@@ -17,11 +17,19 @@
 {% endif %}
 
 
-<ul>
-    {% for instance in object_list %}
-        <li>{{ instance.title }}  {{instance.slug }} {{ instance.get_short_display }}</li>
-    {% endfor %}
-</ul>
+{% for instance in object_list %}
+<div>
+    <h3>{{ instance.title }} </h3>
+    <p>{{ instance.description }}</p>
+    {% if instance.is_movie %}
+        {% include 'playlists/cards/movie.html' with movie=instance %}
+    {% elif instance.is_show %}
+        {% include 'playlists/cards/show.html' with show=instance %}
+    {% else %}
+    {% endif %}
+
+</div>
+{% endfor %}
 
 
 {% endblock %}

@@ -5,22 +5,8 @@ from django.utils import timezone
 from djangoflix.db.models import PublishStateOptions
 
 
+from .mixins import PlaylistMixin
 from .models import Playlist, MovieProxy, TVShowProxy, TVShowSeasonProxy
-
-
-class PlaylistMixin():
-    template_name = 'playlist_list.html'
-    title = None
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data( *args, **kwargs)
-        if self.title is not None:
-            context['title'] = self.title
-
-        print(context)
-        return context
-
-    def get_queryset(self):
-        return super().get_queryset().published()
 
 
 class MovieListView(PlaylistMixin, ListView):
