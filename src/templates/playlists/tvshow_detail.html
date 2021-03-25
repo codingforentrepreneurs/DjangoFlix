@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load rating %}
 {% block head_title %}
     {{ object.title }} /
     {{ block.super }}
@@ -11,7 +11,10 @@
 {% block content %}
 
 <h1>{{ object.title }}</h1>
-
+<div>
+    {% rating object=object %}
+</div>
+<div>
 {{ object.slug }} {{ object.get_short_display }}
 
 
@@ -24,4 +27,8 @@
 
 <li>{{ forloop.counter }} - <a href='{{ season.get_absolute_url }}'>{{ season.title }} </a></li>
 {% endfor %}
+
+</div>
+
 {% endblock %}
+
