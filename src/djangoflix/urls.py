@@ -26,6 +26,8 @@ from playlists.views import (
     FeaturedPlaylistListView
 )
 
+from ratings.views import rate_object_view
+
 '''
 str - everything but /
 int - 0 and up
@@ -51,4 +53,5 @@ urlpatterns = [
     path('shows/<slug:slug>/', TVShowDetailView.as_view()),
     path('shows/', TVShowListView.as_view()),
     path('tags/', include('tags.urls')),
+    path('object-rate/', rate_object_view)
 ]
